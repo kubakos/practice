@@ -41,7 +41,6 @@ def input_data():
     data = data.split('\n')
     row1 = [int(i) for i in data[0].split(' ')]
     row2 = [int(i) for i in data[1].split(' ')]
-
     return row1, row2
 
 
@@ -51,11 +50,30 @@ class Honeycomb():
         self.edge_length = data[0][0]
         self.total_cell_count = self.edge_length**3 - (self.edge_length - 1)**3
         self.max_move_count = data[0][1]
-
-        self.hardened_cells = data[1]
+        self.starting_cell = data[0][2]
+        self.finish_cell = data[0][3]
+        self.hardened_cell_count = data[0][4]
+        self.hardened_cells_id = data[1]
+        self.nodes = {}
+        self.edges = []
         self.graph = {}
+
+    def get_nodes(self):
+        for i in range(1, self.total_cell_count + 1):
+            self.nodes[str(i)] = []
+        return self.nodes.keys()
+
+    def get_edges(self):
+        return self.edges
+
+    def get_graph(self):
+        for i, key in enumerate(self.nodes.keys()):
+            self.graph[key] = self.edges[i]
+
+        return self.graph
 
 
 if __name__ == "__main__":
-    print(input_data()[0])
-    print(input_data()[1])
+    # print(input_data()[0])
+    # print(input_data()[1])
+    print(Honeycomb(input_data()).get_graph())
