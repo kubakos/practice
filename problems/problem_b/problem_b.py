@@ -34,35 +34,28 @@ A single integer K if 0x67 reached the honey at cell B, where B is the Kth cell,
 
 #! /usr/bin/python3
 
-import sys
+
+def input_data():
+    f = open('problems/problem_b/sample-data/1.in', 'r')
+    data = f.read()
+    data = data.split('\n')
+    row1 = [int(i) for i in data[0].split(' ')]
+    row2 = [int(i) for i in data[1].split(' ')]
+
+    return row1, row2
 
 
-def main():
-    for i, line in enumerate(sys.stdin):
-        if i == 0:
-            edge_len = int(line[0])
-            max_cell_num = line[1]
-            starting_cell = line[2]
-            finish_cell = line[3]
-            skipped_cell_num = line[4]
-        elif i == 1:
-            skip_cells = line.split()
+class Honeycomb():
 
-    row_len = [i for i in range(edge_len)]
-    [row_len.append(i) for i in range(edge_len - 2, -1, -1)]
-    for i, num in enumerate(row_len):
-        row_len[i] += edge_len
+    def __init__(self, data):
+        self.edge_length = data[0][0]
+        self.total_cell_count = self.edge_length**3 - (self.edge_length - 1)**3
+        self.max_move_count = data[0][1]
 
-    honeycomb = list(map(lambda x: [i for i in range(1, x + 1)], row_len))
-
-    counter = 0
-    for i, row in enumerate(honeycomb):
-        for j, cell in enumerate(row):
-            counter += 1
-            honeycomb[i][j] = counter
-
-    print(honeycomb)
+        self.hardened_cells = data[1]
+        self.graph = {}
 
 
 if __name__ == "__main__":
-    main()
+    print(input_data()[0])
+    print(input_data()[1])
