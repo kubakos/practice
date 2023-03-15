@@ -48,32 +48,43 @@ class Honeycomb():
 
     def __init__(self, data):
         self.edge_length = data[0][0]
+        self.mid_length = 2 * self.edge_length - 1
         self.total_cell_count = self.edge_length**3 - (self.edge_length - 1)**3
         self.max_move_count = data[0][1]
         self.starting_cell = data[0][2]
         self.finish_cell = data[0][3]
         self.hardened_cell_count = data[0][4]
         self.hardened_cells_id = data[1]
-        self.nodes = {}
-        self.edges = []
         self.graph = {}
-
-    def get_nodes(self):
         for i in range(1, self.total_cell_count + 1):
-            self.nodes[str(i)] = []
-        return self.nodes.keys()
-
-    def get_edges(self):
-        return self.edges
+            self.graph[str(i)] = self.find_edges()[i - 1]
 
     def get_graph(self):
-        for i, key in enumerate(self.nodes.keys()):
-            self.graph[key] = self.edges[i]
-
         return self.graph
+
+    def find_edges(self):
+        edges = []
+
+        for row, row_length in enumerate(self.edge_length, self.mid_length):
+            for column in range(1, self.mid_length):
+                if column > row_length:
+                    break
+
+        return edges
+
+    def node_type(self, row, column):
+        ntyp = []
+        if row == 1:
+            ntyp.append()
+        elif row == self.mid_length:
+            ntyp.append()
+        if column == 1:
+            ntyp.append()
+        elif column == self.mid_length:
+            ntyp.append()
+
+        return ntyp
 
 
 if __name__ == "__main__":
-    # print(input_data()[0])
-    # print(input_data()[1])
     print(Honeycomb(input_data()).get_graph())
