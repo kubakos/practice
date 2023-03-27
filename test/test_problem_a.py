@@ -1,11 +1,11 @@
 #! /usr/bin/python3
 import unittest
-from problems.a.problem_a import length, input_data
+from problems.a.problem_a import *
 
 
 class TestA(unittest.TestCase):
 
-    def test_problem(self):
+    def test_problem_a(self):
         a = open('problems/a/sample-data/1.ans', 'r')
         answer = a.read()
         a.close()
