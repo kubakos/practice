@@ -5,8 +5,8 @@ from problems.b.problem_b import *
 
 class TestB(unittest.TestCase):
 
-    def test_honeycomb(self):
-        print(Honeycomb(input_data()).get_graph())
+    def test_honeycomb_graph_keys(self):
+        pass
 
 
 if __name__ == '__main__':

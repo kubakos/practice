@@ -18,6 +18,7 @@ A single integer K if 0x67 reached the honey at cell B, where B is the Kth cell,
 def input_data():
     f = open('problems/b/sample-data/1.in', 'r')
     data = f.read()
+    f.close()
     data = data.split('\n')
     row1 = [int(i) for i in data[0].split(' ')]
     row2 = [int(i) for i in data[1].split(' ')]
@@ -32,24 +33,35 @@ class Honeycomb():
         self.total_cell_count = self.edge_length**3 - (self.edge_length - 1)**3
         self.hardened_cell_count = data[0][4]
         self.hardened_cell_id = data[1]
-        self.graph = {}
-        for i in range(1, self.total_cell_count + 1):
-            self.graph[str(i)] = self.find_edges()[i - 1]
+        self.graph = self.generate_graph_keys(self.find_edges())
 
     def get_graph(self):
         return self.graph
 
+    def generate_graph_keys(self, edges):
+        keys = {}
+        cell_id = 0
+        for row in range(self.edge_length):
+            for col in range(self.mid_length):
+                if col < self.edge_length + row:
+                    keys[cell_id] = [[str(row) + ',' + str(col)], edges]
+                    cell_id += 1
+                else:
+                    break
+
+        x = 0
+        for row in range(self.edge_length, self.mid_length):
+            x += 1
+            for col in range(self.mid_length):
+                if col < self.mid_length - x:
+                    keys[cell_id] = [[str(row) + ',' + str(col)], edges]
+                    cell_id += 1
+                else:
+                    break
+
+        return keys
+
     def find_edges(self):
         edges = []
 
-        for row, row_length in enumerate(self.edge_length):
-            for column in range(1, self.mid_length):
-                if column > row_length:
-                    break
-
         return edges
-
-    def node_type(self, node_id):
-        n_type = 0
-
-        return n_type
