@@ -33,18 +33,18 @@ class Honeycomb():
         self.total_cell_count = self.edge_length**3 - (self.edge_length - 1)**3
         self.hardened_cell_count = data[0][4]
         self.hardened_cell_id = data[1]
-        self.graph = self.generate_graph_keys(self.find_edges())
+        self.graph = self.generate_graph_keys()
 
     def get_graph(self):
         return self.graph
 
-    def generate_graph_keys(self, edges):
+    def generate_graph_keys(self):
         keys = {}
         cell_id = 0
         for row in range(self.edge_length):
             for col in range(self.mid_length):
                 if col < self.edge_length + row:
-                    keys[cell_id] = [[str(row) + ',' + str(col)], edges]
+                    keys[cell_id] = [[row, col]]
                     cell_id += 1
                 else:
                     break
@@ -54,7 +54,7 @@ class Honeycomb():
             x += 1
             for col in range(self.mid_length):
                 if col < self.mid_length - x:
-                    keys[cell_id] = [[str(row) + ',' + str(col)], edges]
+                    keys[cell_id] = [[row, col]]
                     cell_id += 1
                 else:
                     break
