@@ -34,18 +34,18 @@ class Honeycomb():
         self.hardened_cell_count = data[0][4]
         self.hardened_cell_id = data[1]
         self.graph = self.generate_graph_keys()
+        for key in self.graph:
+            self.graph[key] = self.find_edges(key)
 
     def get_graph(self):
         return self.graph
 
     def generate_graph_keys(self):
         keys = {}
-        cell_id = 0
         for row in range(self.edge_length):
             for col in range(self.mid_length):
                 if col < self.edge_length + row:
-                    keys[cell_id] = [[row, col]]
-                    cell_id += 1
+                    keys[row, col] = []
                 else:
                     break
 
@@ -54,14 +54,32 @@ class Honeycomb():
             x += 1
             for col in range(self.mid_length):
                 if col < self.mid_length - x:
-                    keys[cell_id] = [[row, col]]
-                    cell_id += 1
+                    keys[row, col] = []
                 else:
                     break
 
         return keys
 
-    def find_edges(self):
+    def find_edges(self, key):
         edges = []
+
+        for keys in self.graph.keys():
+            if keys == (key[0] - 1, key[1] - 1):
+                edges.append([key[0] - 1, key[1] - 1])
+
+            if keys == (key[0] + 1, key[1] + 1):
+                edges.append([key[0] + 1, key[1] + 1])
+
+            if keys == (key[0] - 1, key[1]):
+                edges.append([key[0] - 1, key[1]])
+
+            if keys == (key[0], key[1] - 1):
+                edges.append([key[0], key[1] - 1])
+
+            if keys == (key[0] + 1, key[1]):
+                edges.append([key[0] + 1, key[1]])
+
+            if keys == (key[0], key[1] + 1):
+                edges.append([key[0], key[1] + 1])
 
         return edges
