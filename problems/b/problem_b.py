@@ -34,7 +34,7 @@ class Honeycomb():
         self.hardened_cell_count = data[0][4]
         self.hardened_cell_id = data[1]
         self.graph = self.generate_graph_keys()
-        for key in self.graph:
+        for key in self.graph.keys():
             self.graph[key] = self.find_edges(key)
 
     def get_graph(self):
@@ -63,23 +63,37 @@ class Honeycomb():
     def find_edges(self, key):
         edges = []
 
-        for keys in self.graph.keys():
-            if keys == (key[0] - 1, key[1] - 1):
+        if key[0] < self.edge_length - 1:
+            if (key[0] - 1, key[1] - 1) in self.graph.keys():
                 edges.append([key[0] - 1, key[1] - 1])
 
-            if keys == (key[0] + 1, key[1] + 1):
+            if (key[0] + 1, key[1] + 1) in self.graph.keys():
                 edges.append([key[0] + 1, key[1] + 1])
 
-            if keys == (key[0] - 1, key[1]):
-                edges.append([key[0] - 1, key[1]])
+        elif key[0] == self.edge_length - 1:
+            if (key[0] - 1, key[1] - 1) in self.graph.keys():
+                edges.append([key[0] - 1, key[1] - 1])
 
-            if keys == (key[0], key[1] - 1):
-                edges.append([key[0], key[1] - 1])
+            if (key[0] + 1, key[1] - 1) in self.graph.keys():
+                edges.append([key[0] + 1, key[1] - 1])
 
-            if keys == (key[0] + 1, key[1]):
-                edges.append([key[0] + 1, key[1]])
+        elif key[0] > self.edge_length - 1:
+            if (key[0] - 1, key[1] + 1) in self.graph.keys():
+                edges.append([key[0] - 1, key[1] + 1])
 
-            if keys == (key[0], key[1] + 1):
-                edges.append([key[0], key[1] + 1])
+            if (key[0] + 1, key[1] - 1) in self.graph.keys():
+                edges.append([key[0] + 1, key[1] - 1])
+
+        if (key[0] - 1, key[1]) in self.graph.keys():
+            edges.append([key[0] - 1, key[1]])
+
+        if (key[0], key[1] - 1) in self.graph.keys():
+            edges.append([key[0], key[1] - 1])
+
+        if (key[0] + 1, key[1]) in self.graph.keys():
+            edges.append([key[0] + 1, key[1]])
+
+        if (key[0], key[1] + 1) in self.graph.keys():
+            edges.append([key[0], key[1] + 1])
 
         return edges
