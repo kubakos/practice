@@ -33,6 +33,9 @@ class Honeycomb():
         self.total_cell_count = self.edge_length**3 - (self.edge_length - 1)**3
         self.hardened_cell_count = data[0][4]
         self.hardened_cell_id = data[1]
+        self.max_step = data[0][1]
+        self.starting_point = data[0][2]
+        self.end_point = data[0][3]
         self.graph = self.generate_graph_keys()
         for key in self.graph.keys():
             self.graph[key] = self.find_edges(key)
@@ -97,3 +100,11 @@ class Honeycomb():
             edges.append([key[0], key[1] + 1])
 
         return edges
+
+    def search(self):
+        step_count = 0
+
+        if step_count > self.max_step:
+            return 'No'
+        elif step_count <= self.max_step:
+            return step_count
