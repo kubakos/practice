@@ -101,7 +101,7 @@ class Honeycomb():
 
         return edges
 
-    def a_star_algorithm(self, start, stop):
+    def a_star(self, start, stop):
         # In this open_lst is a lisy of nodes which have been visited, but who's
         # neighbours haven't all been always inspected, It starts off with the start
       # node
@@ -175,3 +175,6 @@ class Honeycomb():
 
         print('No')
         return None
+
+    def search(self):
+        answer = self.a_star(self.starting_point, self.end_point)
