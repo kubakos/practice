@@ -13,6 +13,7 @@ Output
 A single integer K if 0x67 reached the honey at cell B, where B is the Kth cell, otherwise the string No if it was impossible to reach the honey by chewing through N cells or less. 
 """
 #! /usr/bin/python3
+from queue import PriorityQueue
 
 
 def input_data():
@@ -101,80 +102,40 @@ class Honeycomb():
 
         return edges
 
-    def a_star(self, start, stop):
-        # In this open_lst is a lisy of nodes which have been visited, but who's
-        # neighbours haven't all been always inspected, It starts off with the start
-      # node
-        # And closed_lst is a list of nodes which have been visited
-        # and who's neighbors have been always inspected
-        open_lst = set([start])
-        closed_lst = set([])
+    def astar(self):
+        # Set up initial values
+        frontier = PriorityQueue()
+        frontier.put(self.starting_point, 0)
+        came_from = {}
+        cost_so_far = {}
+        came_from[self.starting_point] = None
+        cost_so_far[self.starting_point] = 0
 
-        # poo has present distances from start to all other nodes
-        # the default value is +infinity
-        poo = {}
-        poo[start] = 0
+        # Loop until the goal is reached or the frontier is empty
+        while not frontier.empty():
+            # Get the node with the lowest cost from the frontier
+            current_node = frontier.get()
 
-        # par contains an adjac mapping of all nodes
-        par = {}
-        par[start] = start
+            # Check if the goal has been reached
+            if current_node == self.end_point:
+                break
 
-        while len(open_lst) > 0:
-            n = None
+            # Loop through the node's neighbors
+            for neighbor_node, cost in current_node.neighbors():
+                # Calculate the total cost of reaching the neighbor node
+                new_cost = cost_so_far[current_node] + cost
 
-            # it will find a node with the lowest value of f() -
-            for v in open_lst:
-                if n == None or poo[v] + self.h(v) < poo[n] + self.h(n):
-                    n = v
+                # Check if the neighbor node has not been visited before or if a better path to it has been found
+                if neighbor_node not in cost_so_far or new_cost < cost_so_far[neighbor_node]:
+                    # Update the cost and priority of the neighbor node
+                    cost_so_far[neighbor_node] = new_cost
+                    priority = new_cost + \
+                        self.heuristic(self.end_point, neighbor_node)
+                    frontier.put(neighbor_node, priority)
+                    came_from[neighbor_node] = current_node
 
-            if n == None:
-                print('No')
-                return None
+        return came_from, cost_so_far
 
-            # if the current node is the stop
-            # then we start again from start
-            if n == stop:
-                reconst_path = []
-
-                while par[n] != n:
-                    reconst_path.append(n)
-                    n = par[n]
-
-                reconst_path.append(start)
-
-                reconst_path.reverse()
-
-                print('Path found: {}'.format(reconst_path))
-                return reconst_path
-
-            # for all the neighbors of the current node do
-            for (m, weight) in self.get_neighbors(n):
-              # if the current node is not presentin both open_lst and closed_lst
-                # add it to open_lst and note n as it's par
-                if m not in open_lst and m not in closed_lst:
-                    open_lst.add(m)
-                    par[m] = n
-                    poo[m] = poo[n] + weight
-
-                # otherwise, check if it's quicker to first visit n, then m
-                # and if it is, update par data and poo data
-                # and if the node was in the closed_lst, move it to open_lst
-                else:
-                    if poo[m] > poo[n] + weight:
-                        poo[m] = poo[n] + weight
-                        par[m] = n
-
-                        if m in closed_lst:
-                            closed_lst.remove(m)
-                            open_lst.add(m)
-
-            # remove n from the open_lst, and add it to closed_lst
-            # because all of his neighbors were inspected
-            open_lst.remove(n)
-            closed_lst.add(n)
-
-        print('No')
-        return None
-
-    def search(self):
-        answer = self.a_star(self.starting_point, self.end_point)
+    def heuristic(self, goal_node, neighbor_node):
+        # Calculate the heuristic value between the neighbor node and the goal node
+        return abs(goal_node.x - neighbor_node.x) + abs(goal_node.y - neighbor_node.y)

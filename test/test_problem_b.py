@@ -10,7 +10,7 @@ class TestB(unittest.TestCase):
         answer = a.read()
         a.close()
         hc = Honeycomb(input_data())
-        self.assertEqual(hc.search(), answer)
+        self.assertEqual(hc.astar(), answer)
 
         a = open('problems/b/sample-data/2.ans', 'r')
         answer = a.read()
