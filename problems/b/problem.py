@@ -12,7 +12,6 @@ The ID's, A, B, and all the ID's on the second line, are distinct positive integ
 Output
 A single integer K if 0x67 reached the honey at cell B, where B is the Kth cell, otherwise the string No if it was impossible to reach the honey by chewing through N cells or less. 
 """
-#! /usr/bin/python3
 from queue import PriorityQueue
 
 
@@ -103,39 +102,4 @@ class Honeycomb():
         return edges
 
     def astar(self):
-        # Set up initial values
-        frontier = PriorityQueue()
-        frontier.put(self.starting_point, 0)
-        came_from = {}
-        cost_so_far = {}
-        came_from[self.starting_point] = None
-        cost_so_far[self.starting_point] = 0
-
-        # Loop until the goal is reached or the frontier is empty
-        while not frontier.empty():
-            # Get the node with the lowest cost from the frontier
-            current_node = frontier.get()
-
-            # Check if the goal has been reached
-            if current_node == self.end_point:
-                break
-
-            # Loop through the node's neighbors
-            for neighbor_node, cost in current_node.neighbors():
-                # Calculate the total cost of reaching the neighbor node
-                new_cost = cost_so_far[current_node] + cost
-
-                # Check if the neighbor node has not been visited before or if a better path to it has been found
-                if neighbor_node not in cost_so_far or new_cost < cost_so_far[neighbor_node]:
-                    # Update the cost and priority of the neighbor node
-                    cost_so_far[neighbor_node] = new_cost
-                    priority = new_cost + \
-                        self.heuristic(self.end_point, neighbor_node)
-                    frontier.put(neighbor_node, priority)
-                    came_from[neighbor_node] = current_node
-
-        return came_from, cost_so_far
-
-    def heuristic(self, goal_node, neighbor_node):
-        # Calculate the heuristic value between the neighbor node and the goal node
-        return abs(goal_node.x - neighbor_node.x) + abs(goal_node.y - neighbor_node.y)
+        pass

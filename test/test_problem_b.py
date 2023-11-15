@@ -1,6 +1,6 @@
 #! /usr/bin/python3
 import unittest
-from problems.b.problem_b import *
+from problems.b.problem import *
 
 
 class TestB(unittest.TestCase):
