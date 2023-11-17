@@ -1,1 +1,1 @@
-# practice-of-programming
+# practice
