@@ -1,3 +1,4 @@
+"""
 Input
 The input contains two lines. The first line contains five blank separated integers: R N A B X
 R: the length (number of cells) of each edge of the grid, where 2≤R≤20. The total number of cells in the grid can be determined by taking a difference of cubes, R3-(R-1)3.
@@ -10,3 +11,4 @@ The ID's, A, B, and all the ID's on the second line, are distinct positive integ
 
 Output
 A single integer K if 0x67 reached the honey at cell B, where B is the Kth cell, otherwise the string No if it was impossible to reach the honey by chewing through N cells or less. 
+"""

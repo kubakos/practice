@@ -1,3 +1,4 @@
+"""
 Winter is coming (or going? who can be sure these days) and a new king rises in the North. The message travels quickly these days... That is why you, the rising king, have not much time left. You need to rally your bannermen behind you. But one question seems harder to answer than you would have first expected. How large of a kingdom can you claim and how many men should you send for? Your advisors have taken a close look at the potential kingdom and have determined how many of your bannermen would be required to fully defend any part of the map against your foes. As you are a loving and caring king, you want to minimize the number of men that have to serve in your army. To give your war council a fair chance of figuring out the best kingdom to defend, you have to determine the size of the army that you will raise as soon as possible.
 
 Luckily, armies are not that advanced yet. You will only have to defend against armies moving horizontally or vertically (an army cannot pass but your bannermen diagonally). Your kingdom counts as defended, if there is not a single way to reach your castle, starting anywhere outside of the map, without passing to a fully defended area. Squares on the map labeled 0 represent high mountains, or walls, no one would ever be foolish enough to climb. You can assume to be save from invasion without sending any bannermen to defend them. Since you are uncertain about what lurks behind the wall (or in our case the borders of the map), you have to assume the worst and plans as if you would never be able to hold any position outside of the given map.
@@ -7,3 +8,4 @@ The input is given in the form of the (rectangular) strategic map which your adv
 
 Output
 Output an integer on a single line, the smallest possible army you would require to defend any kingdom.
+"""
