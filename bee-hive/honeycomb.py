@@ -1,3 +1,5 @@
+import matplotlib.pyplot as plt
+
 
 class Honeycomb:
 
@@ -25,7 +27,6 @@ class Honeycomb:
                     keys[row, col] = []
                 else:
                     break
-
         x = 0
         for row in range(self.edge_length, self.mid_length):
             x += 1
@@ -34,12 +35,10 @@ class Honeycomb:
                     keys[row, col] = []
                 else:
                     break
-
         return keys
 
     def find_edges(self, key):
         edges = []
-
         for row in range(-1, 2):
             for col in range(-1, 2):
                 if key[0] < self.edge_length - 1:
@@ -57,8 +56,10 @@ class Honeycomb:
                         continue
                     if (key[0] + row, key[1] + col) in self.graph.keys():
                         edges.append([key[0] + row, key[1] + col])
-
         return edges
+
+    def plot_graph(self):
+        pass
 
     def astar(self):
         pass
