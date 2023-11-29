@@ -1,5 +1,3 @@
-import matplotlib.pyplot as plt
-
 
 class Honeycomb:
 
@@ -15,6 +13,12 @@ class Honeycomb:
         self.graph = self.generate_graph_keys()
         for key in self.graph.keys():
             self.graph[key] = self.find_edges(key)
+        self.heuristic = {}
+        for i, key in enumerate(self.graph):
+            if i + 1 in self.hardened_cell_id:
+                self.heuristic[key] = float('inf')
+            else:
+                self.heuristic[key] = 1
 
     def get_graph(self):
         return self.graph
@@ -58,8 +62,25 @@ class Honeycomb:
                         edges.append([key[0] + row, key[1] + col])
         return edges
 
-    def plot_graph(self):
-        pass
+    def astar(self, path_start, path_end):
+        # nodes have uninspected neighbour
+        node_in = {[path_start]}
+        # all neighbours of nodes have been inspected
+        node_out = {[]}
 
-    def astar(self):
-        pass
+        # contains distances from path_start to every other node
+        g = {}
+        g[path_start] = 0
+
+        while len(path_start) > 0:
+            current_node = None
+
+            for i in node_in:
+                if current_node == None or g[i] + self.heuristic[i] < g[current_node] + self.heuristic[current_node]:
+                    current_node = i
+
+            for i in self.graph[current_node]:
+                pass
+
+        print("Path doesn't exist!")
+        return 'No'
