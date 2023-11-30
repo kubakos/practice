@@ -13,6 +13,4 @@ def input_data():
 
 
 if __name__ == '__main__':
-    print(input_data())
     x = honeycomb.Honeycomb(input_data())
-    print(x.get_graph())
