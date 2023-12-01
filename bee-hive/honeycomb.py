@@ -19,7 +19,6 @@ class Honeycomb:
             elif i + 1 == data[0][3]:
                 self.end_node = key
         self.node_weights = self.generate_heuristic_map()
-        print(self.node_weights)
         self.path = self.astar(self.starting_node, self.end_node)
 
     def get_graph(self):
@@ -70,18 +69,20 @@ class Honeycomb:
     def generate_heuristic_map(self):
         h = {}
         h[self.end_node] = 0
-        frontier = self.graph
-        neighbours = frontier.pop(self.end_node)
         weight = 0
+        frontier = self.graph
+        neighbours = [frontier.pop(self.end_node)]
 
         while len(frontier) > 0:
             weight += 1
             next_order_neighbours = []
 
             for neighbour in neighbours:
-                if neighbour in frontier:
-                    h[neighbour] = weight
-                    next_order_neighbours.append(frontier.pop(neighbour))
+                for i in neighbour:
+                    if (i[0], i[1]) in frontier:
+                        h[(i[0], i[1])] = weight
+                        next_order_neighbours.append(
+                            frontier.pop((i[0], i[1])))
 
             neighbours = next_order_neighbours
         return h
