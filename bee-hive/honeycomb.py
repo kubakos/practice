@@ -7,17 +7,21 @@ class Honeycomb:
         self.total_cell_count = self.edge_length**3 - (self.edge_length - 1)**3
         self.hardened_cell_count = data[0][4]
         self.hardened_cell_id = data[1]
+        self.hardened_cell_loc = []
         self.max_step = data[0][1]
         self.starting_node = None
         self.end_node = None
         self.graph = self.generate_graph_keys()
-        for key in self.graph.keys():
+        for key in self.graph:
             self.graph[key] = self.find_edges(key)
         for i, key in enumerate(self.graph):
             if i + 1 == data[0][2]:
                 self.starting_node = key
             elif i + 1 == data[0][3]:
                 self.end_node = key
+        for i, key in enumerate(self.graph):
+            if i + 1 in self.hardened_cell_id:
+                self.hardened_cell_loc.append(key)
         self.node_weights = self.generate_heuristic_map()
         self.path = self.astar(self.starting_node, self.end_node)
 
@@ -79,7 +83,12 @@ class Honeycomb:
 
             for neighbour in neighbours:
                 for i in neighbour:
-                    if (i[0], i[1]) in frontier:
+                    if ((i[0], i[1]) in self.hardened_cell_loc) & ((i[0], i[1]) in frontier):
+                        h[(i[0], i[1])] = float('inf')
+                        next_order_neighbours.append(
+                            frontier.pop((i[0], i[1])))
+                        continue
+                    elif (i[0], i[1]) in frontier:
                         h[(i[0], i[1])] = weight
                         next_order_neighbours.append(
                             frontier.pop((i[0], i[1])))
