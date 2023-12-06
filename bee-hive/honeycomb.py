@@ -1,7 +1,4 @@
 
-# TODO: Debug, Test astar() method
-
-
 class Honeycomb:
 
     def __init__(self, data):
@@ -28,11 +25,14 @@ class Honeycomb:
         self.node_weights = self.generate_heuristic_map()
         self.path = self.astar(self.starting_node, self.end_node)
 
-    def get_graph(self):
-        return self.graph
-
     def get_path(self):
-        return self.path
+        if isinstance(self.path, list):
+            if len(self.path) - 1 <= self.max_step:
+                return len(self.path) - 1
+            else:
+                return 'No'
+        else:
+            return self.path
 
     def generate_graph_keys(self):
         keys = {}
@@ -77,7 +77,8 @@ class Honeycomb:
         h = {}
         h[self.end_node] = 0
         weight = 0
-        frontier = self.graph
+        wax_hardened_cell_weight = float('inf')
+        frontier = self.graph.copy()
         neighbours = [frontier.pop(self.end_node)]
 
         while len(frontier) > 0:
@@ -86,24 +87,25 @@ class Honeycomb:
 
             for neighbour in neighbours:
                 for i in neighbour:
-                    if ((i[0], i[1]) in self.hardened_cell_loc) & ((i[0], i[1]) in frontier):
-                        h[(i[0], i[1])] = float('inf')
+                    i = (i[0], i[1])
+                    if (i in self.hardened_cell_loc) & (i in frontier):
+                        h[i] = wax_hardened_cell_weight
                         next_order_neighbours.append(
-                            frontier.pop((i[0], i[1])))
+                            frontier.pop(i))
                         continue
-                    elif (i[0], i[1]) in frontier:
-                        h[(i[0], i[1])] = weight
+                    elif i in frontier:
+                        h[i] = weight
                         next_order_neighbours.append(
-                            frontier.pop((i[0], i[1])))
+                            frontier.pop(i))
 
             neighbours = next_order_neighbours
         return h
 
     def astar(self, path_start, path_end):
         # nodes that have uninspected neighbour(s)
-        nodes_to_inspect = set(path_start)
+        nodes_to_inspect = set([path_start])
         # all neighbours of nodes have been inspected
-        inspected_nodes = set()
+        inspected_nodes = set([])
 
         # contains travel costs from path_start to registered nodes - g()
         travel_cost = {}
@@ -119,7 +121,7 @@ class Honeycomb:
             # find a node with the lowest value of f()
             for n in nodes_to_inspect:
                 if current_node == None or travel_cost[n] + self.node_weights[n] < travel_cost[current_node] + self.node_weights[current_node]:
-                    current_node = n
+                    current_node = (n[0], n[1])
 
             # if end of path node reached, return the path
             if current_node == path_end:
@@ -132,16 +134,17 @@ class Honeycomb:
                 path.append(path_start)
                 path.reverse()
 
-                print("Path found:", path)
-                return len(path)
+                return path
 
             # for all neighbors of the current node do
             for neighbour in self.graph[current_node]:
+                neighbour = (neighbour[0], neighbour[1])
                 if neighbour not in nodes_to_inspect and neighbour not in inspected_nodes:
-                    nodes_to_inspect.add(neighbour)
-                    parent_node[neighbour] = current_node
-                    travel_cost[neighbour] = travel_cost[current_node] + \
-                        self.node_weights[current_node]
+                    if self.node_weights[neighbour] != float('inf'):
+                        nodes_to_inspect.add(neighbour)
+                        parent_node[neighbour] = current_node
+                        travel_cost[neighbour] = travel_cost[current_node] + \
+                            self.node_weights[current_node]
                 else:
                     if travel_cost[neighbour] > travel_cost[current_node] + self.node_weights[current_node]:
                         parent_node[neighbour] = current_node
@@ -155,5 +158,4 @@ class Honeycomb:
             nodes_to_inspect.remove(current_node)
             inspected_nodes.add(current_node)
 
-        print("Path does not exist!")
-        return 'No'
+        return 'Path does not exist!'

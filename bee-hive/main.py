@@ -2,8 +2,8 @@
 import honeycomb
 
 
-def input_data():
-    f = open('sample-data/1.in', 'r')
+def input_data(test_case):
+    f = open('sample-data/' + str(test_case) + '.in', 'r')
     data = f.read()
     f.close()
     data = data.split('\n')
@@ -13,6 +13,6 @@ def input_data():
 
 
 if __name__ == '__main__':
-    x = honeycomb.Honeycomb(input_data())
-    print(x.generate_heuristic_map())
-    print(x.get_path())
+    x = honeycomb.Honeycomb(input_data(1))
+    step_count = x.get_path()
+    print(step_count)
