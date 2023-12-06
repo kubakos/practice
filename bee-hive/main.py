@@ -14,3 +14,5 @@ def input_data():
 
 if __name__ == '__main__':
     x = honeycomb.Honeycomb(input_data())
+    print(x.generate_heuristic_map())
+    print(x.get_path())

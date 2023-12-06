@@ -1,4 +1,7 @@
 
+# TODO: Debug, Test astar() method
+
+
 class Honeycomb:
 
     def __init__(self, data):
@@ -107,8 +110,8 @@ class Honeycomb:
         travel_cost[path_start] = 0
 
         # contains the registered paths from path_start
-        path = {}
-        path[path_start] = [path_start]
+        parent_node = {}
+        parent_node[path_start] = path_start
 
         while len(nodes_to_inspect) > 0:
             current_node = None
@@ -120,53 +123,37 @@ class Honeycomb:
 
             # if end of path node reached, return the path
             if current_node == path_end:
-                pass
+                path = []
 
-        # ------------------------------------------------------------------------
-        """
-        # if the current node is the stop_node
-        # then we begin reconstructin the path from it to the start_node
-        if n == stop_node:
-            reconst_path = []
+                while parent_node[current_node] != current_node:
+                    path.append(current_node)
+                    current_node = parent_node[current_node]
 
-            while parents[n] != n:
-                reconst_path.append(n)
-                n = parents[n]
+                path.append(path_start)
+                path.reverse()
 
-            reconst_path.append(start_node)
+                print("Path found:", path)
+                return len(path)
 
-            reconst_path.reverse()
+            # for all neighbors of the current node do
+            for neighbour in self.graph[current_node]:
+                if neighbour not in nodes_to_inspect and neighbour not in inspected_nodes:
+                    nodes_to_inspect.add(neighbour)
+                    parent_node[neighbour] = current_node
+                    travel_cost[neighbour] = travel_cost[current_node] + \
+                        self.node_weights[current_node]
+                else:
+                    if travel_cost[neighbour] > travel_cost[current_node] + self.node_weights[current_node]:
+                        parent_node[neighbour] = current_node
+                        travel_cost[neighbour] = travel_cost[current_node] + \
+                            self.node_weights[current_node]
 
-            print('Path found: {}'.format(reconst_path))
-            return reconst_path
+                        if neighbour in inspected_nodes:
+                            inspected_nodes.remove(neighbour)
+                            nodes_to_inspect.add(neighbour)
 
-        # for all neighbors of the current node do
-        for (m, weight) in self.get_neighbors(n):
-            # if the current node isn't in both open_list and closed_list
-            # add it to open_list and note n as it's parent
-            if m not in open_list and m not in closed_list:
-                open_list.add(m)
-                parents[m] = n
-                g[m] = g[n] + weight
+            nodes_to_inspect.remove(current_node)
+            inspected_nodes.add(current_node)
 
-            # otherwise, check if it's quicker to first visit n, then m
-            # and if it is, update parent data and g data
-            # and if the node was in the closed_list, move it to open_list
-            else:
-                if g[m] > g[n] + weight:
-                    g[m] = g[n] + weight
-                    parents[m] = n
-
-                    if m in closed_list:
-                        closed_list.remove(m)
-                        open_list.add(m)
-
-        # remove n from the open_list, and add it to closed_list
-        # because all of his neighbors were inspected
-        open_list.remove(n)
-        closed_list.add(n)
-        """
-        # -------------------------------------------------------------------------------------
-
-        print("Path doesn't exist!")
+        print("Path does not exist!")
         return 'No'
